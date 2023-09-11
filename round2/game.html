@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic Tac Toe</title>
+    <style>
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 4px;
+            width: 300px;
+        }
+        .cell { 
+        
+            width:100px;
+            height:100px;
+            border:2px solid skyblue;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 25px;
+            box-shadow: 0 0 0 2px skyblue;
+        }
+    </style>
+</head>
+<body>
+    <center>
+    <h1>TIC TAC TOE GAME</h1>
+    <div class="board" id="board"></div>
+    <script>
+        // const board = document.getElementById("board");
+        const box = Array(9).fill(null);
+        let ThePlayer = "O";
+        let gameOver = false;
+        for (let i = 0; i < 9; i++) {
+            const cell = document.createElement("div");
+            cell.classList.add("cell");
+            cell.dataset.index = i;
+            cell.addEventListener("click", () => CellClick(i));
+            board.appendChild(cell);
+        }
+
+        function CellClick(index) {
+            if (gameOver || box[index]) return;
+
+            box[index] = ThePlayer;
+            board.children[index].textContent = ThePlayer;
+            board.children[index].classList.add(ThePlayer);
+
+            if (Win()) {
+                gameOver = true;
+                document.write(`Player ${ThePlayer} wins!`);
+            } else if (box.every(cell => cell !== null)) {
+                gameOver = true;
+                document.write("It's a draw!");
+            } else {
+               ThePlayer = ThePlayer === "O" ? "X" : "O";
+            }
+        }
+
+        function Win() {
+            const winform = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6],
+            ];
+
+            for (const form of winform) {
+                const [x, y, z] = form;
+                if (box[x] && box[x] === box[y] && box[x] === box[z]&& box[z]) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+    </script>
+</center>
+</body>
+</html>
